@@ -1,0 +1,25 @@
+{
+  "$schema": "../schema/video-to-geospatial-timeline.schema.json",
+  "schema_version": "0.1.0",
+  "media": {
+    "title": "Market at Dawn",
+    "duration_seconds": 120
+  },
+  "timeline": [
+    {
+      "id": "moment_001",
+      "start_seconds": 12,
+      "end_seconds": 28,
+      "label": "The market wakes up",
+      "scene": {
+        "title": "Market at Dawn"
+      },
+      "place": {
+        "name": "Oaxaca de Juárez",
+        "country": "Mexico",
+        "country_code": "MX"
+      },
+      "confidence": 0.72
+    }
+  ]
+}

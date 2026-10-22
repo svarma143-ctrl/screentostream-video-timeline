@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "screentostream-video-timeline"
+version = "0.1.0"
+description = "A vendor-neutral JSON Schema for mapping video time ranges to places, scenes, and bookable offers."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "ScreenToStream Concierge contributors" }
+]
+keywords = [
+  "json-schema",
+  "video",
+  "geospatial",
+  "mcp",
+  "bookable",
+  "shoppable",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Video",
+]
+dependencies = [
+  "jsonschema>=4.22",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/svarma143-ctrl/screentostream-video-timeline"
+Source = "https://github.com/svarma143-ctrl/screentostream-video-timeline"
+Related = "https://github.com/svarma143-ctrl/screentostream-concierge"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/video_timeline"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

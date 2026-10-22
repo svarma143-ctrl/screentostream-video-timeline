@@ -1,0 +1,128 @@
+{
+  "$schema": "../schema/video-to-geospatial-timeline.schema.json",
+  "schema_version": "0.1.0",
+  "id": "timeline_kyoto_after_dark_s01e03",
+  "media": {
+    "title": "Kyoto After Dark",
+    "episode": "S1 E3",
+    "duration_seconds": 1800,
+    "language": "en",
+    "source": "screentostream-concierge demo catalog",
+    "external_ids": {
+      "catalog": "scene_kyoto_pontocho"
+    }
+  },
+  "generated_at": "2026-10-22T00:00:00Z",
+  "generator": {
+    "name": "ScreenToStream Concierge",
+    "version": "0.1.0",
+    "method": "deterministic-scene-match",
+    "url": "https://github.com/svarma143-ctrl/screentostream-concierge"
+  },
+  "provenance": {
+    "source": "screentostream-concierge/data/scenes.json",
+    "license": "MIT",
+    "observed_at": "2026-10-22T00:00:00Z"
+  },
+  "integrations": {
+    "mcp": {
+      "server": "https://concierge.example.com/mcp",
+      "tools": [
+        "get_viewing_context",
+        "plan_trip",
+        "quote_trip",
+        "book_trip"
+      ]
+    },
+    "booking": {
+      "provider": "ScreenToStream Concierge demo",
+      "tool": "book_trip"
+    }
+  },
+  "timeline": [
+    {
+      "id": "scene_kyoto_pontocho",
+      "start_seconds": 745,
+      "end_seconds": 800,
+      "start_timecode": "00:12:25",
+      "end_timecode": "00:13:20",
+      "label": "Lanterns on Pontocho",
+      "scene": {
+        "title": "Lanterns on Pontocho",
+        "summary": "The host ducks under a row of paper lanterns, orders silken tofu on a riverside veranda, and watches the Kamo turn from silver to ink.",
+        "subjects": [
+          "Pontocho Alley",
+          "yudofu",
+          "Kamo River"
+        ],
+        "visual": {
+          "emoji": "🏮",
+          "palette": [
+            "#0b1f2a",
+            "#d98e4a",
+            "#f4e3c8"
+          ],
+          "mood": "quiet, amber, intimate"
+        }
+      },
+      "place": {
+        "name": "Pontocho Alley, Kyoto",
+        "destination_id": "kyoto",
+        "city": "Kyoto",
+        "region": "Kyoto Prefecture",
+        "country": "Japan",
+        "country_code": "JP",
+        "timezone": "Asia/Tokyo",
+        "coordinates": {
+          "latitude": 35.0037,
+          "longitude": 135.77
+        },
+        "accuracy_meters": 250
+      },
+      "bookable": [
+        {
+          "kind": "stay",
+          "catalog_ref": "stay_kyoto_machiya",
+          "name": "Machiya Lantern House",
+          "provider": "ScreenToStream demo catalog"
+        },
+        {
+          "kind": "experience",
+          "catalog_ref": "exp_kyoto_lanterns",
+          "name": "Pontocho after dark",
+          "provider": "ScreenToStream demo catalog"
+        },
+        {
+          "kind": "dining",
+          "catalog_ref": "dine_kyoto_yudofu",
+          "name": "Kamo River Yudofu",
+          "provider": "ScreenToStream demo catalog"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "caption",
+          "text": "The host ducks under a row of paper lanterns and orders silken tofu on a riverside veranda.",
+          "confidence": 0.96
+        },
+        {
+          "kind": "frame",
+          "uri": "frame://kyoto-after-dark/s01e03/0760",
+          "confidence": 0.92
+        }
+      ],
+      "confidence": 0.97,
+      "provenance": {
+        "source": "deterministic scene match",
+        "method": "show plus nearest timestamp",
+        "observed_at": "2026-10-22T00:00:00Z"
+      }
+    }
+  ],
+  "extensions": {
+    "screentostream": {
+      "scene_payload_version": "0.1.0",
+      "service": "concierge"
+    }
+  }
+}
