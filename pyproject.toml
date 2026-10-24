@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "screentostream-video-timeline"
-version = "0.1.0"
+version = "0.1.1"
 description = "A vendor-neutral JSON Schema for mapping video time ranges to places, scenes, and bookable offers."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,6 +34,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest>=8.0",
+  "ruff>=0.6",
 ]
 
 [project.urls]
@@ -43,6 +44,11 @@ Related = "https://github.com/svarma143-ctrl/screentostream-concierge"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/video_timeline"]
+
+# The schema is the product, so the wheel must carry a copy. Without this the
+# installed package cannot resolve its own schema outside the source checkout.
+[tool.hatch.build.targets.wheel.force-include]
+"schema/video-to-geospatial-timeline.schema.json" = "video_timeline/schema/video-to-geospatial-timeline.schema.json"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

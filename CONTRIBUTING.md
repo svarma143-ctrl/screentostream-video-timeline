@@ -13,6 +13,16 @@ uvx ruff check src tests
 uvx ruff format --check src tests
 ```
 
+Or run everything at once:
+
+```bash
+make check
+```
+
+CI runs the suite on Python 3.10 and 3.12, and separately installs the built
+wheel in a clean virtual environment to prove the schema travels with the
+package.
+
 ## Schema changes
 
 - Keep the core portable. Put vendor-specific fields under `extensions`.

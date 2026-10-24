@@ -9,18 +9,34 @@ from __future__ import annotations
 
 import argparse
 import json
+from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+SCHEMA_FILENAME = "video-to-geospatial-timeline.schema.json"
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_PATH = ROOT / "schema" / "video-to-geospatial-timeline.schema.json"
+SCHEMA_PATH = ROOT / "schema" / SCHEMA_FILENAME
+
+
+def _schema_bytes() -> bytes:
+    """Return the schema from the installed package, or from the source tree.
+
+    The wheel ships a copy under ``video_timeline/schema/`` so validation works
+    outside a checkout. The repository path is the fallback for editable
+    installs, where the canonical ``schema/`` directory stays at the repo root.
+    """
+    packaged = files("video_timeline") / "schema" / SCHEMA_FILENAME
+    try:
+        return packaged.read_bytes()
+    except (FileNotFoundError, OSError):
+        return SCHEMA_PATH.read_bytes()
 
 
 def load_schema() -> dict[str, Any]:
-    """Load the canonical schema from this repository."""
-    return json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    """Load the canonical schema bundled with this package."""
+    return json.loads(_schema_bytes())
 
 
 def _format_path(error: Any) -> str:
@@ -45,6 +61,7 @@ def _semantic_errors(document: dict[str, Any]) -> list[str]:
 
     duration = media.get("duration_seconds")
     previous_end = 0.0
+    seen_ids: set[str] = set()
 
     for index, entry in enumerate(timeline):
         if not isinstance(entry, dict):
@@ -55,6 +72,11 @@ def _semantic_errors(document: dict[str, Any]) -> list[str]:
             continue
 
         prefix = f"timeline[{index}]"
+        entry_id = entry.get("id")
+        if isinstance(entry_id, str):
+            if entry_id in seen_ids:
+                errors.append(f"{prefix}.id duplicates an earlier entry: {entry_id}")
+            seen_ids.add(entry_id)
         if end <= start:
             errors.append(f"{prefix}.end_seconds must be greater than start_seconds")
         if isinstance(duration, (int, float)) and end > duration:
@@ -97,7 +119,13 @@ def main(argv: list[str] | None = None) -> int:
 
     failed = False
     for filename in args.files:
-        errors = validate_file(filename)
+        try:
+            errors = validate_file(filename)
+        except (OSError, json.JSONDecodeError) as exc:
+            failed = True
+            print(f"FAIL {filename}")
+            print(f"  - could not read JSON: {exc}")
+            continue
         if errors:
             failed = True
             print(f"FAIL {filename}")

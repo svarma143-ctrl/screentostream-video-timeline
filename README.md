@@ -75,6 +75,28 @@ Validate your own document:
 python -m video_timeline path/to/timeline.json
 ```
 
+### Use it as a dependency
+
+The validator is not published to PyPI. Install it straight from Git, or build
+a wheel from the checkout:
+
+```bash
+pip install "git+https://github.com/svarma143-ctrl/screentostream-video-timeline.git"
+python -m video_timeline timeline.json
+```
+
+```python
+from video_timeline import validate_document
+
+errors = validate_document(document)
+if errors:
+    raise SystemExit("\n".join(errors))
+```
+
+The built wheel bundles the JSON Schema, so `load_schema()` and the CLI work
+outside a repository checkout. CI installs the wheel in a clean virtual
+environment and validates an example to keep that true.
+
 ---
 
 ## A minimal document
@@ -188,6 +210,7 @@ The JSON Schema checks shape, types, enums, and ranges. The validator adds these
 semantic rules:
 
 - `end_seconds` must be greater than `start_seconds`;
+- timeline entry ids must be unique within a document;
 - entries must be ordered and must not overlap;
 - entries must fit inside `media.duration_seconds`;
 - `confidence` must be between `0` and `1`;
@@ -274,10 +297,10 @@ Example:
 ## Repository layout
 
 ```text
-schema/      JSON Schema 2020-12 contract
+schema/      JSON Schema 2020-12 contract (also bundled into the wheel)
 examples/    Valid minimal and full documents
 src/         Python loader and semantic validator
-tests/       Valid and invalid document tests
+tests/       Valid, invalid, and CLI tests
 ```
 
 ---
